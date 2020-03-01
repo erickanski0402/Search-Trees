@@ -1,15 +1,19 @@
+from helpers import strToMatrix, matrixToStr
 from bfs import breadthFirstSearch
 from dfs import depthFirstSearch
 from ast import aStarSearch
 from board import Board
+from node import Node
+from timeit import default_timer
 import sys
 
+# RUN WITH:
+# python driver.py bfs 3,1,2,0,4,5,6,7,8
+# python driver.py bfs 1,2,5,3,4,0,6,7,8
+start = default_timer()
 alg = sys.argv[1]
 boardStr = sys.argv[2]
-
-board = Board(boardStr)
-print(board.matrix)
-print(board.matrixToStr())
+root = Node(boardStr)
 
 output = {
     'path_to_goal': None,
@@ -24,15 +28,21 @@ output = {
 algOutput = None
 
 if alg == 'bfs':
-    algOutput = breadthFirstSearch(board)
+    algOutput = breadthFirstSearch(root)
     pass
 elif alg == 'dfs':
-    algOutput = depthFirstSearch(board)
+    algOutput = depthFirstSearch(root)
     pass
 elif alg == 'ast':
-    algOutput = aStarSearch(board)
+    algOutput = aStarSearch(root)
     pass
 else:
     print('Argument unknown')
 
+print('Total runtime:       ', round(default_timer() - start, 10))
+print('Solution found:      ', algOutput)
+print('Tree:')
+str(root)
+print(root)
+# print('Moves from initial:  ', list(algOutput.values())[1:])
 # Stream output of methods to 'output.txt'
