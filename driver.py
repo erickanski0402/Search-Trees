@@ -40,9 +40,9 @@ else:
     print('Argument unknown')
 
 print('Total runtime:       ', round(default_timer() - start, 10))
-print('Solution found:      ', algOutput)
-print('Tree:')
-str(root)
-print(root)
+# print('Solution found:      ', algOutput)
+# print('Tree:')
+# str(root)
+# print(root)
 # print('Moves from initial:  ', list(algOutput.values())[1:])
 # Stream output of methods to 'output.txt'

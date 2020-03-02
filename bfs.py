@@ -27,11 +27,11 @@ def breadthFirstSearch(root):
             return explored
 
         # Adds neighbors to the current node
-        state.resolveNeighbors()
-        neighbors = state.neighbors
+        neighbors = state.resolveNeighbors()
         # Iterates over all the neighbors of the current node
         for key in neighbors.keys():
-            str = neighbors.get(key)
+            cleanupList = []
+            str = neighbors.get(key).boardStr
             # if the current neighbor hasnt already been explored and isnt in  queue to be
             if not (frontier.get(str) or explored.get(str)):
                 # Put the board in queue to be explored
@@ -39,9 +39,13 @@ def breadthFirstSearch(root):
                 frontier[str] = True
             else:
                 # Otherwise prune the redundant neighbor from the tree
-                del neighbors[key]
-            pass
-        pass
+                cleanupList.append(key)
+            continue
+
+        for _ in cleanupList:
+            deleteFromMap(neighbors, _)
+            continue
+        continue
     return explored
 
 # def breadthFirstSearch(initState):
