@@ -1,8 +1,7 @@
-from helpers import strToMatrix, matrixToStr
 from bfs import breadthFirstSearch
 from dfs import depthFirstSearch
-from ast import aStarSearch
-from board import Board
+from astar import aStarSearch
+from constants import GOAL_STATE
 from node import Node
 from timeit import default_timer
 import sys
@@ -13,7 +12,7 @@ import sys
 start = default_timer()
 alg = sys.argv[1]
 boardStr = sys.argv[2]
-root = Node(boardStr)
+root = Node(boardStr, None)
 
 output = {
     'path_to_goal': None,
@@ -28,19 +27,30 @@ output = {
 algOutput = None
 
 if alg == 'bfs':
-    algOutput = breadthFirstSearch(root)
+    algOutput = breadthFirstSearch(root, GOAL_STATE)
     pass
 elif alg == 'dfs':
-    algOutput = depthFirstSearch(root)
+    algOutput = depthFirstSearch(root, GOAL_STATE)
     pass
 elif alg == 'ast':
-    algOutput = aStarSearch(root)
+    algOutput = aStarSearch(root, GOAL_STATE)
     pass
 else:
     print('Argument unknown')
 
-print('Total runtime:       ', round(default_timer() - start, 10))
-# print('Solution found:      ', algOutput)
+output['path_to_goal'], output['max_search'], output['nodes_expanded'] = algOutput
+output['cost_of_path'] = len(output['path_to_goal'])
+output['search_depth'] = len(output['path_to_goal'])
+output['running_time'] = round(default_timer() - start, 10)
+# output['max_ram_usage'] = resource.ru_maxrss
+
+for key in output.keys():
+    print(f'{key}:', output[key])
+# print('Solution found:      ', output['path_to_goal'])
+# print('Solution found:      ', output['path_to_goal'])
+# print('Max Depth of Tree:   ', output['max_search'])
+# print('Nodes Expanded:      ', output['nodes_expanded'])
+# print('Total runtime:       ', output['running_time'])
 # print('Tree:')
 # str(root)
 # print(root)

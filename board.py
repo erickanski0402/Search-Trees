@@ -1,11 +1,10 @@
-from helpers import matrixToStr, strToMatrix
-from constants import DIRECTION_LIST, UP, DOWN, LEFT, RIGHT
+from helpers import matrixToStr, strToMatrix, strToIntArray
+from constants import DIRECTION_LIST, UP, DOWN, LEFT, RIGHT, GOAL_STATE_MAP
 import numpy as np
 
 class Board:
     def __init__(self, boardStr):
         self.boardStr = boardStr
-        # self.dirFromParent = dirFromParent
         self.matrix = strToMatrix(boardStr)
         pass
 

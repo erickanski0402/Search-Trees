@@ -1,9 +1,8 @@
-from helpers import strToMatrix, matrixToStr, deleteFromMap
-from constants import GOAL_STATE
+from helpers import deleteFromMap
 from board import Board
 from queue import Queue
 
-def breadthFirstSearch(root):
+def breadthFirstSearch(root, goal):
     # Place the root node on the queue
     queue = Queue()
     queue.put(root)
@@ -12,6 +11,7 @@ def breadthFirstSearch(root):
     frontier[root.boardStr] = True
     # Initialize empty set of explored boards
     explored = {}
+    expandedNodes = 0
 
     while queue.qsize() > 0:
         # Pop the next board node off the queue
@@ -20,14 +20,15 @@ def breadthFirstSearch(root):
         board = state.boardStr
         explored[board] = True
         deleteFromMap(frontier, board)
-
         # if the board is equal to the goal state
-        if board  == GOAL_STATE:
+        if board == goal:
             print("SOLUTION FOUND!!!!!!!!!! (Airhorn noises)")
-            return explored
+            # return tuple of (Path to root, max node depth, nodes expanded)
+            return (state.getPathToRoot(), root.findMaxDepth(), expandedNodes)
 
         # Adds neighbors to the current node
         neighbors = state.resolveNeighbors()
+        expandedNodes += 1
         # Iterates over all the neighbors of the current node
         for key in neighbors.keys():
             cleanupList = []
@@ -46,41 +47,5 @@ def breadthFirstSearch(root):
             deleteFromMap(neighbors, _)
             continue
         continue
-    return explored
 
-# def breadthFirstSearch(initState):
-#     # Queue initialized with the first board
-#     queue = Queue()
-#     queue.put(initState)
-#     nodes_expanded = 0
-#
-#     frontier = {}
-#     frontier[matrixToStr(initState.matrix)] = True
-#
-#     # Explored: empty set
-#     explored = {}
-#
-#     # while frontier is NOT empty
-#     while queue.qsize() > 0:
-#         # current state is te next item in frontier queue
-#         state = queue.get()
-#
-#         # add current state to set of explored boards
-#         explored[matrixToStr(state.matrix)] = state.dirFromParent
-#
-#         # if current state is GOAL_STATE
-#         if matrixToStr(state.matrix) == GOAL_STATE:
-#             # Return SUCCESS
-#             print("SOLUTION FOUND!!!!!!!!!! (Airhorn noises)")
-#             return explored
-#
-#         # for every neighbor of the current state board
-#         neighbors = state.getNeighbors()
-#         for key in neighbors.keys():
-#             str = matrixToStr(neighbors[key].matrix)
-#             # if neighbor is not in the frontier or in explored
-#             if not frontier.get(str) and not explored.get(str):
-#                 # add neighbor to the frontier queue (ensure neighbors are queued in UDLR order)
-#                 queue.put(neighbors[key])
-#         pass
-#     return []
+    return ()
