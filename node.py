@@ -2,29 +2,30 @@ from helpers import getKeyByValue, strToMatrix
 from board import Board
 
 class Node:
-    def __init__(self, boardStr, parent):
+    def __init__(self, boardStr, parent, height):
         self.boardStr = boardStr
         self.parent = parent
+        self.height = height
         self.neighbors = {}
         pass
 
-    def __str__(self, level=0):
-        # Calculates tabs depending on level
-        str = "\t"*level + f"{self.boardStr}\n"
-        # for all neighbors in given node
-        for neighbor in self.neighbors.values():
-            str += neighbor.__str__(level+1)
-        return str
+    # def __str__(self, level=0):
+    #     # Calculates tabs depending on level
+    #     str = "\t"*level + f"{self.boardStr}\n"
+    #     # for all neighbors in given node
+    #     for neighbor in self.neighbors.values():
+    #         str += neighbor.__str__(level+1)
+    #     return str
 
-    def resolveNeighbors(self):
+    def resolveNeighbors(self, parentHeight):
         board = Board(self.boardStr)
-        self.neighbors = self.convertNeighborsToNodes(board.getNeighbors())
+        self.neighbors = self.convertNeighborsToNodes(board.getNeighbors(), parentHeight)
         return self.neighbors
 
-    def convertNeighborsToNodes(self, neighbors):
+    def convertNeighborsToNodes(self, neighbors, parentHeight):
         map = {}
         for key in neighbors:
-            map[key] = Node(neighbors.get(key), self)
+            map[key] = Node(neighbors.get(key), self, parentHeight + 1)
         return map
 
     def getPathToRoot(self):
@@ -42,6 +43,3 @@ class Node:
         # Final array will be in order of goalNode->root, and thus needs to be reversed
         path.reverse()
         return path
-
-    def findMaxDepth(root):
-        return 0

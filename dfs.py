@@ -1,4 +1,4 @@
-from helpers import deleteFromMap
+from helpers import deleteFromMap, getFirstNeighbor
 from board import Board
 from collections import deque
 
@@ -12,6 +12,7 @@ def depthFirstSearch(root, goal):
     # Initialize empty set of explored boards
     explored = {}
     expandedNodes = 0
+    max_search_depth = 0
 
     while len(stack) > 0:
         # Pop the next board node off the queue
@@ -23,12 +24,12 @@ def depthFirstSearch(root, goal):
         # if the board is equal to the goal state
         if board == goal:
             print("SOLUTION FOUND!!!!!!!!!! (Airhorn noises)")
-            # Is this working properly for dfs?
-            return (state.getPathToRoot(), root.findMaxDepth(), expandedNodes)
+            return (state.getPathToRoot(), max_search_depth, expandedNodes)
 
         # Adds neighbors to the current node
-        neighbors = state.resolveNeighbors()
+        neighbors = state.resolveNeighbors(state.height)
         expandedNodes += 1
+
         # Iterates over all the neighbors of the current node
         cleanupList = []
         tempList = []
@@ -50,5 +51,12 @@ def depthFirstSearch(root, goal):
         for _ in cleanupList:
             deleteFromMap(neighbors, _)
             continue
+
+        # Assuming neighbors are present, gets their height, otherwise 0
+        search_depth = 0 if not bool(neighbors) else getFirstNeighbor(neighbors).height
+        # If these nodes are found to be the deepest level of the tree
+        if search_depth > max_search_depth:
+            # A new max_search_depth is set
+            max_search_depth = search_depth
         continue
     return ()

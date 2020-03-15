@@ -22,7 +22,6 @@ class Board:
         for dir in DIRECTION_LIST:
             matrix = self.move(dir)
             if matrix is not None:
-                # map[dir] = Board(matrixToStr(matrix), dir)
                 map[dir] = matrixToStr(matrix)
             continue
         return map

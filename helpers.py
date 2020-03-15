@@ -32,3 +32,6 @@ def calculateManhattanDistance(boardStr):
         totalDistance += abs(goalPos[0] - pos[0]) + abs(goalPos[1] - pos[1])
         continue
     return totalDistance
+
+def getFirstNeighbor(map):
+    return map.get(next(iter(map)))

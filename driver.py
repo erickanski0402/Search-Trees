@@ -4,6 +4,7 @@ from astar import aStarSearch
 from constants import GOAL_STATE
 from node import Node
 from timeit import default_timer
+# from resource import getrusage, RUSAGE_SELF
 import sys
 
 # RUN WITH:
@@ -12,14 +13,14 @@ import sys
 start = default_timer()
 alg = sys.argv[1]
 boardStr = sys.argv[2]
-root = Node(boardStr, None)
+root = Node(boardStr, None, 0)
 
 output = {
     'path_to_goal': None,
     'cost_of_path': None,
     'nodes_expanded': None,
     'search_depth': None,
-    'max_search': None,
+    'max_search_depth': None,
     'running_time': None,
     'max_ram_usage': None
 }
@@ -38,21 +39,17 @@ elif alg == 'ast':
 else:
     print('Argument unknown')
 
-output['path_to_goal'], output['max_search'], output['nodes_expanded'] = algOutput
+output['path_to_goal'], output['max_search_depth'], output['nodes_expanded'] = algOutput
 output['cost_of_path'] = len(output['path_to_goal'])
 output['search_depth'] = len(output['path_to_goal'])
 output['running_time'] = round(default_timer() - start, 10)
-# output['max_ram_usage'] = resource.ru_maxrss
+# output['max_ram_usage'] = getrusage(RUSAGE_SELF).ru_maxrss / 1000000
 
+f = open('output.txt', 'w+')
 for key in output.keys():
-    print(f'{key}:', output[key])
-# print('Solution found:      ', output['path_to_goal'])
-# print('Solution found:      ', output['path_to_goal'])
-# print('Max Depth of Tree:   ', output['max_search'])
-# print('Nodes Expanded:      ', output['nodes_expanded'])
-# print('Total runtime:       ', output['running_time'])
+    f.write(f'{key}: {output[key]},\n')
+f.close()
 # print('Tree:')
 # str(root)
 # print(root)
-# print('Moves from initial:  ', list(algOutput.values())[1:])
 # Stream output of methods to 'output.txt'
